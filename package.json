@@ -1,0 +1,25 @@
+{
+  "name": "phidoc-video",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elayaneoumaima081-sketch/Phidoc-video.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/elayaneoumaima081-sketch/Phidoc-video/issues"
+  },
+  "homepage": "https://github.com/elayaneoumaima081-sketch/Phidoc-video#readme",
+  "dependencies": {
+    "@fontsource/cairo": "^5.1.0",
+    "three": "^0.170.0"
+  },
+  "type": "module"
+}
