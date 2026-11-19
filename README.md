@@ -1,4 +1,4 @@
-# PhiDoc × Baahith, Reel #1: "300 مقال، والاجتماع غدا"
+# PhiDoc × Baahith, Reel #1: "بزاف ديال المقالات"
 
 A 45-second vertical (1080×1920, 30 fps) 3D animated Instagram Reel in Moroccan Darija.
 A PhD student (glasses, black shirt, smooth black hair) panics under a pile of papers,
@@ -8,7 +8,7 @@ and Baahith hops onto his desk to show him how PhiDoc helps.
 
 ## Design system
 
-The on-screen UI follows the PhiDoc design system (organization default):
+The captions and the outro follow the PhiDoc design system (organization default):
 - Colours: `primary` teal hsl(180 53% 23%) for the one primary element, light `card` surfaces with `border` hairlines and 22px radius,
   dark-theme tokens (warm near-black hsl(42 8% 9%)) for the video ground and the feature pills, meaning pairs
   (`green-soft`/`green` OK, `red-soft`/`destructive` missing reference, `amber-soft`/`amber` highlight, `purple-soft`/`purple` Baahith).
@@ -16,7 +16,7 @@ The on-screen UI follows the PhiDoc design system (organization default):
 - Icons: Lucide (2px stroke) in soft-tinted tiles, no emoji. No em dashes in copy.
 - Motion: soft fade-up on the brand ease cubic-bezier(.32,.72,0,1); UI never bounces.
 - Outro: full-bleed teal panel with the two 5% circles and the official `logo-light.svg` (`assets/`).
-- Captions carry no speaker names; the current word is amber when the student speaks and teal when Baahith speaks.
+- No cards, panels or feature labels during the story: it is just the conversation, with captions. Captions carry no speaker names; the current word is amber when the student speaks and teal when Baahith speaks.
 
 ## Script & voice-over timing sheet
 
@@ -25,15 +25,15 @@ word by word with the same timing, so the voice should follow the caption pace.
 
 | # | Time (s) | Who | Darija line | Feature on screen |
 |---|---|---|---|---|
-| 1 | 1.0 – 5.0 | Student (panicked) | عندي 300 مقال خاصني نقراهم قبل الاجتماع ديال غدا! | Papers rain onto the desk; hook title |
-| 2 | 7.0 – 11.4 | Baahith (cheerful) | ماتخافش! فـ PhiDoc تقدر تقلب على ملايين المقالات فكل المجالات. | Find papers: search panel |
+| 1 | 1.0 – 5.0 | Student (panicked) | عندي بزاف ديال المقالات خاصني نقراهوم | Papers rain onto the desk |
+| 2 | 7.0 – 11.4 | Baahith (cheerful) | ماتخافش! فـ PhiDoc تقدر تقلب على ملايين المقالات فكل المجالات. | |
 | 3 | 11.6 – 13.4 | Student (curious) | بصح؟ حتى فالمجال ديالي؟ | |
-| 4 | 13.6 – 18.0 | Baahith | زيد اللي عجبوك للمكتبة ديالك، ورتبهم فـ collections. | Personal library, Collections: papers fly into "الفصل 1/2/3" folders |
-| 5 | 18.2 – 23.0 | Baahith | علّم على الجمل المهمة، وغادي نربطهم ليك مع الأسئلة ديال البحث ديالك. | Highlights and evidence, linked to a research question |
+| 4 | 13.6 – 18.0 | Baahith | اه، زيد اللي عجبوك للمكتبة ديالك، و رتبهم ف collections | Papers fly into "الفصل 1/2/3" folders |
+| 5 | 18.2 – 23.0 | Baahith | علّم على الجمل المهمة، وغادي نربطهم ليك مع الأسئلة ديال البحث ديالك. | |
 | 6 | 23.2 – 25.4 | Student (worried) | وإلا نسيت شي مرجع؟ | |
-| 7 | 25.6 – 30.0 | Baahith | غادي نتأكد بلي حتى مرجع ما ناقص فالأطروحة ديالك. | Citation audit: missing reference flagged, then fixed |
+| 7 | 25.6 – 30.0 | Baahith | غادي نتأكد بلي حتى مرجع ما ناقص فالأطروحة ديالك. | |
 | 8 | 30.2 – 32.4 | Student | وإلا كان عندي سؤال على الموضوع ديالي؟ | |
-| 9 | 32.6 – 36.4 | Baahith | سولني أنا! ونجاوبك على حساب المجال ديالك. | Ask Baahith: chat panel |
+| 9 | 32.6 – 36.4 | Baahith | سولني أنا! ونجاوبك على حساب المجال ديالك. | |
 | 10 | 36.8 – 38.6 | Student (relaxed, leaning back) | صافي، دابا نقدر نرتاح | |
 | 11 | 38.8 – 41.0 | Baahith (laughing) | ترتاح؟! باقي خاصك تكتب الأطروحة | Punchline: glasses slip, sweat drop, zoom |
 | | 41.0 – 45.0 | | Outro: PhiDoc logo, رحلة الدكتوراه كاملة في منصّة واحدة., button جرّب Baahith دابا, الرابط فالبيو | |
