@@ -1,0 +1,21 @@
+{
+  "flow_id": "nanmak1p71N3m0OGkdj4",
+  "model": "eleven_v3",
+  "voices": {
+    "boy": { "voice_id": "Vsm8jlUqY4LxvQNtr7R6", "name": "Mehdi - Sharp and Lively (Moroccan Darija)" },
+    "bot": { "voice_id": "NMWQDQipWXm8HlCLKapi", "name": "Houssam - Warm, Friendly (Moroccan Darija)" }
+  },
+  "lines": [
+    { "n": 1,  "who": "boy", "session": "ZawcyjrGYCFkbTJLQKx6", "generation": "YS6bg1DvyG2g1qBCkFxd", "dur": 2.96, "prompt": "[panicked] عندي بزاف ديال المقالات... خاصني نقراهوم!" },
+    { "n": 2,  "who": "bot", "session": "2yZzzJ5uCisEHahDWJ8P", "generation": "AHFiNbxE0ZWBa4bdVl7k", "dur": 6.8,  "prompt": "[cheerfully] ماتخافش! فـ PhiDoc تقدر تقلب على ملايين المقالات، فكل المجالات." },
+    { "n": 3,  "who": "boy", "session": "3G5NPV6yN3YRvAPVzDU7", "generation": "E6cNvbDv1KZOPWEJDWft", "dur": 2.8,  "prompt": "[surprised] بصح؟ حتى فالمجال ديالي؟" },
+    { "n": 4,  "who": "bot", "session": "weLYoOfCH2uOzPiss07b", "generation": "YT1RdvUZTnVMAVdyPVNS", "dur": 5.44, "prompt": "[warmly] اه، زيد اللي عجبوك للمكتبة ديالك، و رتبهم ف collections." },
+    { "n": 5,  "who": "bot", "session": "uCZp3rEkvHujQwIiDDqn", "generation": "6Wq1ogFUDc21HcCVniyx", "dur": 6.56, "prompt": "علّم على الجمل المهمة، وغادي نربطهم ليك مع الأسئلة ديال البحث ديالك." },
+    { "n": 6,  "who": "boy", "session": "lSWgytILekFr4bREddb0", "generation": "Xe0swA1ghTimm48JcxCc", "dur": 2.8,  "prompt": "[nervous] وإلا نسيت شي مرجع؟" },
+    { "n": 7,  "who": "bot", "session": "rVJiZH94bjhqh5sWVSnB", "generation": "qx4NvofdbyIrnkOAIbva", "dur": 3.76, "prompt": "[reassuring] غادي نتأكد بلي حتى مرجع ما ناقص فالأطروحة ديالك." },
+    { "n": 8,  "who": "boy", "session": "CXotHHJN9GyrqpRYvmeF", "generation": "kK6uugR3XvnnGLqcrzrY", "dur": 2.8,  "prompt": "[curious] وإلا كان عندي سؤال على الموضوع ديالي؟" },
+    { "n": 9,  "who": "bot", "session": "5Ks29xALeuqTk9491xWw", "generation": "I8wt5RCFEA9UZ4vmVRiJ", "dur": 3.76, "prompt": "[excited] سولني أنا! ونجاوبك على حساب المجال ديالك." },
+    { "n": 10, "who": "boy", "session": "K49XZmehskEQVlWlhVVu", "generation": "cGka0ifFfhyAfxLFi5wg", "dur": 2.96, "prompt": "[sighs] [relieved] صافي... دابا نقدر نرتاح." },
+    { "n": 11, "who": "bot", "session": "nPsqRLMq6RDIA3O2ve8T", "generation": "5Mpinvx9vku2huwUpfrS", "dur": 3.04, "prompt": "[laughs] ترتاح؟! باقي خاصك تكتب الأطروحة!" }
+  ]
+}
