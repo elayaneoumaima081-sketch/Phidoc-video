@@ -69,7 +69,7 @@ npm install
 node src/render.js stills 3 9.5 20   # quick preview frames -> out/stills/
 node src/render.js video 0 45 frames.mp4   # silent video, ~8 min
 python3 src/audio.py                 # music + sfx -> out/audio.wav
-ffmpeg -y -i out/frames.mp4 -i out/audio.wav -c:v copy -c:a aac -b:a 192k -shortest out/phidoc_reel_baahith.mp4
+ffmpeg -y -i out/frames.mp4 -i out/audio.wav -c:v libx264 -preset slow -crf 21 -maxrate 14M -bufsize 28M -pix_fmt yuv420p -c:a aac -b:a 192k -shortest -movflags +faststart out/phidoc_reel_baahith.mp4
 ```
 
 Rendering uses Three.js in headless Chromium (Playwright), with each frame captured and encoded by ffmpeg.
