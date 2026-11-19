@@ -24,8 +24,8 @@ renderer.toneMappingExposure = 1.05;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color('#0d0b0e');
-scene.fog = new THREE.Fog('#0d0b0e', 6, 14);
+scene.background = new THREE.Color('#191815'); // PhiDoc dark background hsl(42 8% 9%)
+scene.fog = new THREE.Fog('#191815', 6, 14);
 const camera = new THREE.PerspectiveCamera(40, 1080 / 1920, 0.05, 50);
 
 scene.add(new THREE.HemisphereLight('#ffe9d6', '#2a2230', 0.9));
@@ -54,8 +54,8 @@ function mesh(geo, mat, pos, parent, shadow = true) {
 }
 
 // ---------- room ----------
-mesh(new THREE.PlaneGeometry(30, 30).rotateX(-Math.PI / 2), M('#1a1519', { roughness: 1 }), V(0, 0, 0));
-mesh(new THREE.PlaneGeometry(30, 12), M('#120f13', { roughness: 1 }), V(0, 5, -3));
+mesh(new THREE.PlaneGeometry(30, 30).rotateX(-Math.PI / 2), M('#1f1d1a', { roughness: 1 }), V(0, 0, 0));
+mesh(new THREE.PlaneGeometry(30, 12), M('#191815', { roughness: 1 }), V(0, 5, -3));
 const deskMat = M('#b8703c', { roughness: 0.55 });
 mesh(new THREE.BoxGeometry(3.6, 0.06, 1.1), deskMat, V(0, 0.75, -0.1));
 for (const x of [-1.7, 1.7]) mesh(new THREE.BoxGeometry(0.07, 0.75, 1.0), M('#7c4a28'), V(x, 0.375, -0.1));
@@ -212,14 +212,14 @@ const PILE = V(0.0, DESK_Y, -0.12);
 function labelTex(text, color) {
   const c = document.createElement('canvas'); c.width = 512; c.height = 256; const g = c.getContext('2d');
   g.fillStyle = color; g.fillRect(0, 0, 512, 256);
-  g.fillStyle = '#ffffff'; g.font = '900 96px Cairo'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.direction = 'rtl';
+  g.fillStyle = '#ffffff'; g.font = '700 92px "IBM Plex Sans Arabic"'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.direction = 'rtl';
   g.fillText(text, 256, 138);
   const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
 }
 const FOLDERS = [
-  { label: 'الفصل 1', color: '#4fae9b', pos: V(-0.55, 1.78, 0.15) },
-  { label: 'الفصل 2', color: '#e98f6f', pos: V(0.0, 1.9, 0.15) },
-  { label: 'الفصل 3', color: '#8d7ad6', pos: V(0.55, 1.78, 0.15) },
+  { label: 'الفصل 1', color: 'hsl(175, 84%, 32%)', pos: V(-0.55, 1.78, 0.15) },
+  { label: 'الفصل 2', color: 'hsl(26, 90%, 37%)', pos: V(0.0, 1.9, 0.15) },
+  { label: 'الفصل 3', color: 'hsl(245, 58%, 52%)', pos: V(0.55, 1.78, 0.15) },
 ];
 const folders = FOLDERS.map((f) => {
   const g = new THREE.Group(); g.position.copy(f.pos); scene.add(g);
@@ -378,33 +378,41 @@ function animate3D(t) {
     const f = folders[i];
     const show = range(t, 13.65 + i * 0.12, 14.1 + i * 0.12) * (1 - range(t, 17.7, 18.0));
     f.group.visible = show > 0.001;
-    const s = easeBack(clamp(show)) * (1 + 0.08 * Math.max(0, Math.sin((t - 14) * 9)) * range(t, 14, 17) * (t < 17 ? 1 : 0));
+    const s = easeOut(clamp(show));
     f.group.scale.setScalar(Math.max(0.001, s));
     f.group.rotation.y = Math.sin(t * 1.5 + i) * 0.15; f.group.position.y = f.pos.y + Math.sin(t * 2 + i) * 0.02;
   }
 }
 
-// ---------- overlays ----------
+// ---------- overlays (PhiDoc motion: soft fade up, no bounce, brand ease cubic-bezier(.32,.72,0,1)) ----------
+function bezier(x1, y1, x2, y2) {
+  const A = (a, b) => 1 - 3 * b + 3 * a, B = (a, b) => 3 * b - 6 * a, C = (a) => 3 * a;
+  const f = (t, a, b) => ((A(a, b) * t + B(a, b)) * t + C(a)) * t;
+  return (x) => {
+    if (x <= 0) return 0; if (x >= 1) return 1;
+    let lo = 0, hi = 1, t = x;
+    for (let i = 0; i < 30; i++) { t = (lo + hi) / 2; if (f(t, x1, x2) < x) lo = t; else hi = t; }
+    return f(t, y1, y2);
+  };
+}
+const brand = bezier(0.32, 0.72, 0, 1);
 const $ = (s) => document.querySelector(s);
-function show(el, v, dy = 40, sc = 0.08) {
-  el.style.opacity = clamp(v * 1.2);
-  const k = easeBack(clamp(v));
-  el.style.transform = `translateY(${(1 - k) * dy}px) scale(${1 - sc + sc * k})`;
+const $$ = (s) => document.querySelectorAll(s);
+function show(el, v, dy = 28) {
+  const k = brand(clamp(v));
+  el.style.opacity = k;
+  el.style.transform = `translateY(${(1 - k) * dy}px)`;
 }
 let curLine = null;
-const capEl = $("#cap");
+const capEl = $('#cap');
 function captions(t) {
   const L = LINES.find((l) => t >= l.s - 0.1 && t <= l.e + 0.35);
   if (L !== curLine) {
     curLine = L;
-    if (L) {
-      capEl.querySelector('.who').className = 'who ' + L.who;
-      capEl.querySelector('.who').textContent = L.who === 'bot' ? 'Baahith 🤖' : 'الطالب 🎓';
-      capEl.querySelector('.txt').innerHTML = L.text.split(' ').map((w) => `<span class="w">${w}</span>`).join(' ');
-    }
+    if (L) capEl.querySelector('.txt').innerHTML = L.text.split(' ').map((w) => `<span class="w">${w}</span>`).join(' ');
   }
   if (!L) { capEl.style.opacity = 0; return; }
-  show(capEl, win(t, L.s - 0.1, L.e + 0.35, 0.15, 0.2), 20, 0.04);
+  show(capEl, win(t, L.s - 0.1, L.e + 0.35, 0.2, 0.2), 16);
   const ws = capEl.querySelectorAll('.w'); const n = ws.length;
   ws.forEach((w, i) => {
     const ws0 = L.s + ((L.e - L.s) * i) / n;
@@ -415,68 +423,70 @@ let curChip = null;
 function chips(t) {
   const C = CHIPS.find((c) => t >= c.s && t <= c.e);
   const el = $('#chip');
-  if (C !== curChip) { curChip = C; if (C) { el.querySelector('.ic').textContent = C.icon; el.querySelector('.tx').textContent = C.text; } }
-  show(el, C ? win(t, C.s, C.e, 0.3, 0.2) : 0, -30, 0.25);
+  if (C !== curChip) {
+    curChip = C;
+    if (C) { el.querySelector('use').setAttribute('href', '#i-' + C.icon); el.querySelector('.en').textContent = C.en; el.querySelector('.ar').textContent = C.ar; }
+  }
+  show(el, C ? win(t, C.s, C.e, 0.35, 0.25) : 0, -20);
 }
 const QUERY = 'الذكاء الاصطناعي فالتشخيص الطبي';
 function panels(t) {
-  show($('#hook'), win(t, 0.3, 3.2, 0.35, 0.3), 60, 0.3);
+  show($('#hook'), win(t, 0.3, 3.4, 0.4, 0.3), 30);
   // search
-  const sv = win(t, 7.3, 11.5, 0.35, 0.3); show($('#search'), sv);
+  show($('#search'), win(t, 7.3, 11.5, 0.4, 0.3));
   $('#search .q').textContent = QUERY.slice(0, Math.floor(QUERY.length * range(t, 7.7, 9.0)));
   $('#search .caret').style.opacity = Math.floor(t * 3) % 2 ? 1 : 0.15;
-  $('#search .count').style.opacity = range(t, 8.9, 9.2);
-  document.querySelectorAll('#search .res').forEach((r, i) => show(r, range(t, 9.2 + i * 0.35, 9.6 + i * 0.35), 30, 0.1));
+  show($('#search .count'), range(t, 8.9, 9.3), 10);
+  $$('#search .res').forEach((r, i) => show(r, range(t, 9.2 + i * 0.3, 9.7 + i * 0.3), 20));
   // evidence
-  show($('#evid'), win(t, 18.3, 23.0, 0.35, 0.3));
-  document.querySelectorAll('#evid .l.hl').forEach((l, i) => l.style.setProperty('--hl', easeOut(range(t, 19.2 + i * 0.35, 19.6 + i * 0.35))));
-  show($('#evid .badge'), range(t, 19.9, 20.2), 20, 0.4);
-  show($('#evid .q'), range(t, 20.1, 20.45), 30, 0.2);
-  $('#link').setAttribute('stroke-dashoffset', 400 * (1 - easeIO(range(t, 20.4, 21.1))));
+  show($('#evid'), win(t, 18.3, 23.0, 0.4, 0.3));
+  $$('#evid .l.hl').forEach((l, i) => l.style.setProperty('--hl', brand(range(t, 19.2 + i * 0.35, 19.7 + i * 0.35))));
+  show($('#evid .badge'), range(t, 19.9, 20.3), 16);
+  show($('#evid .q'), range(t, 20.1, 20.55), 20);
+  $('#link').setAttribute('stroke-dashoffset', 400 * (1 - brand(range(t, 20.4, 21.2))));
   // audit
-  show($('#audit'), win(t, 25.8, 30.0, 0.35, 0.3));
-  const its = document.querySelectorAll('#audit .it');
+  show($('#audit'), win(t, 25.8, 30.0, 0.4, 0.3));
+  const its = $$('#audit .it');
   const times = [26.6, 27.2, 27.8, 28.3];
   its.forEach((it, i) => {
-    show(it, range(t, times[i] - 0.3, times[i]), 20, 0.1);
-    let cls = 'it';
-    if (t >= times[i]) cls += i === 2 && t < 28.9 ? ' bad' : ' ok';
-    it.className = cls;
+    show(it, range(t, times[i] - 0.35, times[i]), 16);
+    it.className = 'it' + (t >= times[i] ? (i === 2 && t < 28.9 ? ' bad' : ' ok') : '');
   });
   const fixed = t >= 28.9;
-  its[2].querySelector('.st').textContent = fixed ? '✓' : '!';
-  its[2].querySelector('.lbl').textContent = fixed ? 'الفصل 3 — تزاد المرجع' : 'الفصل 3 — مرجع ناقص';
+  its[2].querySelector('.lbl').textContent = fixed ? 'الفصل 3: تزاد المرجع' : 'الفصل 3: مرجع ناقص';
   its[2].querySelector('.ref').textContent = fixed ? 'El Amrani, 2022' : '[?]';
   // chat
-  show($('#chat'), win(t, 32.8, 36.5, 0.3, 0.3));
-  show($('#chat .u'), range(t, 32.8, 33.15), 30, 0.15);
-  show($('#chat .a'), range(t, 33.5, 33.85), 30, 0.15);
-  const ANS = 'على حساب المجال ديالك، كنقترح ليك منهجية مختلطة 📊 ونعطيك المراجع اللي كتدعمها.';
+  show($('#chat'), win(t, 32.8, 36.5, 0.35, 0.3));
+  show($('#chat .u'), range(t, 32.8, 33.2), 20);
+  show($('#chat .row'), range(t, 33.5, 33.9), 20);
+  const ANS = 'على حساب المجال ديالك، كنقترح ليك منهجية مختلطة، ومعاها المراجع اللي كتدعمها.';
   const k = range(t, 34.0, 35.9);
   $('#chat .ans').textContent = k > 0 ? ANS.slice(0, Math.ceil(ANS.length * k)) : '';
   $('#chat .dots').style.display = k > 0 ? 'none' : 'inline';
-  document.querySelectorAll('#chat .dots span').forEach((d, i) => (d.style.transform = `translateY(${Math.sin(t * 10 - i) * 6}px)`));
-  // outro
-  const o = range(t, 41.0, 41.5);
-  $('#outro').style.opacity = o;
-  show($('#outro .logo'), range(t, 41.2, 41.6), 60, 0.4);
-  show($('#outro .tag'), range(t, 41.6, 41.95), 40, 0.2);
-  show($('#outro .feat'), range(t, 41.9, 42.25), 40, 0.2);
-  const cta = $('#outro .cta'); show(cta, range(t, 42.3, 42.7), 40, 0.3);
-  if (t > 42.7) cta.style.transform = `scale(${1 + 0.04 * Math.sin((t - 42.7) * 6)})`;
-  // whip flash on the landing + outro
-  $('#flash').style.opacity = 0.55 * (1 - range(t, 6.55, 6.8)) * (t >= 6.55 ? 1 : 0) + 0.6 * (1 - range(t, 41.0, 41.3)) * (t >= 41 ? 1 : 0);
+  $$('#chat .dots span').forEach((d, i) => (d.style.opacity = 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(t * 8 - i * 1.2))));
+  // outro: the teal panel slides down from the top
+  const o = brand(range(t, 41.0, 41.6));
+  const ou = $('#outro'); ou.style.opacity = t >= 41 ? 1 : 0; ou.style.top = `${-(1 - o) * 1180}px`;
+  show($('#outro .logo'), range(t, 41.5, 42.0), 24);
+  show($('#outro .tag'), range(t, 41.8, 42.3), 24);
+  show($('#outro .feat'), range(t, 42.0, 42.5), 24);
+  show($('#outro .cta'), range(t, 42.3, 42.8), 24);
 }
 
 window.renderAt = (t) => {
   t = Math.min(t, DURATION - 0.001);
   animate3D(t); updateCamera(t); renderer.render(scene, camera);
   captions(t); chips(t); panels(t);
+  window.scrollTo(0, 0); document.documentElement.scrollLeft = 0; document.body.scrollLeft = 0;
 };
 window.__ready = (async () => {
-  await document.fonts.load('900 60px Cairo', 'عربي'); await document.fonts.load('700 40px Cairo', 'عربي');
-  await document.fonts.load('900 60px CairoLat', 'Ab'); await document.fonts.load('700 40px CairoLat', 'Ab');
+  await Promise.all([
+    document.fonts.load('700 60px "IBM Plex Sans Arabic"', 'عربي'), document.fonts.load('600 40px "IBM Plex Sans Arabic"', 'عربي'),
+    document.fonts.load('500 40px "IBM Plex Sans Arabic"', 'عربي'), document.fonts.load('700 50px Amiri', 'عربي'),
+    document.fonts.load('600 40px Inter', 'Ab'), document.fonts.load('500 40px Inter', 'Ab'), document.fonts.load('400 40px Inter', 'Ab'),
+  ]);
   await document.fonts.ready;
+  await new Promise((r) => { const im = $('#outro img'); if (im.complete) r(); else im.onload = r; });
   for (const f of folders) { f.lab.material.map = labelTex(f.label, f.color); f.lab.material.needsUpdate = true; }
   window.renderAt(0);
   return true;

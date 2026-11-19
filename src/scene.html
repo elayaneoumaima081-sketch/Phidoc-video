@@ -1,142 +1,229 @@
 <!doctype html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
 <title>PhiDoc Reel</title>
 <style>
-  @font-face { font-family: Cairo; font-weight: 400; src: url(/node_modules/@fontsource/cairo/files/cairo-arabic-400-normal.woff2); }
-  @font-face { font-family: Cairo; font-weight: 700; src: url(/node_modules/@fontsource/cairo/files/cairo-arabic-700-normal.woff2); }
-  @font-face { font-family: Cairo; font-weight: 900; src: url(/node_modules/@fontsource/cairo/files/cairo-arabic-900-normal.woff2); }
-  @font-face { font-family: CairoLat; font-weight: 400; src: url(/node_modules/@fontsource/cairo/files/cairo-latin-400-normal.woff2); }
-  @font-face { font-family: CairoLat; font-weight: 700; src: url(/node_modules/@fontsource/cairo/files/cairo-latin-700-normal.woff2); }
-  @font-face { font-family: CairoLat; font-weight: 900; src: url(/node_modules/@fontsource/cairo/files/cairo-latin-900-normal.woff2); }
-  html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #0b0a0d; }
-  * { box-sizing: border-box; font-family: CairoLat, Cairo, 'Noto Color Emoji', sans-serif; }
+  /* PhiDoc design system: Inter (UI), IBM Plex Sans Arabic after Inter (Arabic), Amiri as the Arabic serif voice. */
+  @font-face { font-family: Inter; font-weight: 400; src: url(/node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2); }
+  @font-face { font-family: Inter; font-weight: 500; src: url(/node_modules/@fontsource/inter/files/inter-latin-500-normal.woff2); }
+  @font-face { font-family: Inter; font-weight: 600; src: url(/node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2); }
+  @font-face { font-family: Inter; font-weight: 700; src: url(/node_modules/@fontsource/inter/files/inter-latin-700-normal.woff2); }
+  @font-face { font-family: "IBM Plex Sans Arabic"; font-weight: 400; src: url(/node_modules/@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-arabic-400-normal.woff2); }
+  @font-face { font-family: "IBM Plex Sans Arabic"; font-weight: 500; src: url(/node_modules/@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-arabic-500-normal.woff2); }
+  @font-face { font-family: "IBM Plex Sans Arabic"; font-weight: 600; src: url(/node_modules/@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-arabic-600-normal.woff2); }
+  @font-face { font-family: "IBM Plex Sans Arabic"; font-weight: 700; src: url(/node_modules/@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-arabic-700-normal.woff2); }
+  @font-face { font-family: Amiri; font-weight: 700; src: url(/node_modules/@fontsource/amiri/files/amiri-arabic-700-normal.woff2); }
+
+  :root {
+    /* light theme tokens (cards) */
+    --background: hsl(180 8% 97%);
+    --foreground: hsl(0 0% 6%);
+    --card: hsl(0 0% 100%);
+    --muted: hsl(0 0% 96%);
+    --muted-foreground: hsl(0 0% 42%);
+    --border: hsl(0 0% 78%);
+    --input: hsl(0 0% 78%);
+    --primary: hsl(180 53% 23%);
+    --primary-foreground: hsl(0 0% 100%);
+    --teal-soft: hsl(180 29% 94%);
+    --teal-pill: hsl(180 29% 87%);
+    --green: hsl(136 53% 35%);
+    --green-soft: hsl(136 29% 94%);
+    --amber: hsl(40 72% 35%);
+    --amber-soft: hsl(42 88% 94%);
+    --destructive: hsl(10 73% 43%);
+    --red-soft: hsl(16 76% 95%);
+    --purple: hsl(249 54% 58%);
+    --purple-soft: hsl(245 100% 96%);
+    /* dark theme tokens (on the video ground) */
+    --d-background: hsl(42 8% 9%);
+    --d-card: hsl(42 8% 12%);
+    --d-border: hsl(42 8% 24%);
+    --d-foreground: hsl(36 17% 95%);
+    --d-muted-foreground: hsl(30 8% 68%);
+    --d-teal: hsl(180 40% 50%);
+    --d-teal-soft: hsl(180 22% 16%);
+    --d-teal-light: hsl(180 44% 62%);
+    --d-amber: hsl(40 75% 55%);
+    --radius: 12px;
+    --radius-2xl: 22px;
+    --sh: 0 1px 2px rgba(15, 27, 27, .04), 0 8px 24px -6px rgba(15, 27, 27, .1);
+    --sh-lg: 0 2px 4px rgba(15, 27, 27, .04), 0 20px 48px -12px rgba(15, 27, 27, .16);
+    --sh-lg-dark: 0 2px 4px rgba(0,0,0,.36), 0 20px 48px -12px rgba(0,0,0,.6);
+    --sans: Inter, "IBM Plex Sans Arabic", ui-sans-serif, system-ui, sans-serif;
+    --serif-ar: Amiri, Georgia, serif;
+  }
+  html, body { margin: 0; width: 1080px; height: 1920px; overflow: clip; background: var(--d-background); }
+  * { box-sizing: border-box; font-family: var(--sans); letter-spacing: normal; font-feature-settings: "cv05", "cv08", "ss03", "calt"; }
   canvas#gl { position: absolute; inset: 0; width: 1080px; height: 1920px; }
   .ov { position: absolute; opacity: 0; will-change: transform, opacity; }
+  .ltr { direction: ltr; }
+  svg.i { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+  .tile { display: grid; place-items: center; border-radius: var(--radius-2xl); flex: none; }
+  .card { background: var(--card); color: var(--foreground); border: 1px solid var(--border); border-radius: var(--radius-2xl); box-shadow: var(--sh-lg-dark); }
 
-  /* captions */
-  #cap { left: 60px; right: 60px; top: 1330px; text-align: center; direction: rtl; }
-  #cap .who { display: inline-block; font-weight: 700; font-size: 34px; padding: 4px 22px; border-radius: 30px; margin-bottom: 14px; color: #0b0a0d; }
-  #cap .who.bot { background: #7fd1c0; }
-  #cap .who.boy { background: #ffd84d; }
-  #cap .txt { font-weight: 900; font-size: 62px; line-height: 1.45; color: #fff;
-    -webkit-text-stroke: 3px #000; paint-order: stroke fill; text-shadow: 0 6px 18px rgba(0,0,0,.65); }
-  #cap .w { display: inline-block; margin: 0 7px; transition: none; }
+  /* captions (no speaker labels) */
+  #cap { left: 64px; right: 64px; top: 1360px; text-align: center; }
+  #cap .txt { font-weight: 700; font-size: 60px; line-height: 1.75; color: #fff;
+    -webkit-text-stroke: 10px hsl(42 8% 9% / .92); paint-order: stroke fill; }
+  #cap .w { display: inline-block; margin: 0 6px; }
   #cap .w.hide { opacity: 0; }
-  #cap .w.cur.boy { color: #ffd84d; }
-  #cap .w.cur.bot { color: #8ff0dc; }
+  #cap .w.cur.boy { color: var(--d-amber); }
+  #cap .w.cur.bot { color: var(--d-teal-light); }
 
   /* hook */
-  #hook { left: 70px; right: 70px; top: 180px; text-align: center; direction: rtl; }
-  #hook div { display: inline-block; background: #ffd84d; color: #111; font-weight: 900; font-size: 66px; padding: 10px 36px; border-radius: 22px;
-    transform: rotate(-2deg); box-shadow: 0 14px 40px rgba(0,0,0,.5); }
+  #hook { left: 0; right: 0; top: 200px; display: flex; justify-content: center; }
+  #hook .card { display: flex; align-items: center; gap: 24px; padding: 22px 40px 22px 30px; }
+  #hook .tile { width: 84px; height: 84px; background: var(--amber-soft); color: var(--amber); font-size: 44px; }
+  #hook .t { font-weight: 700; font-size: 58px; line-height: 1.4; }
+  #hook .s { font-weight: 500; font-size: 32px; color: var(--muted-foreground); line-height: 1.5; }
 
-  /* chips */
-  #chip { left: 0; right: 0; top: 150px; text-align: center; }
-  #chip div { display: inline-flex; align-items: center; gap: 16px; background: rgba(15,30,30,.82); border: 3px solid #7fd1c0; color: #fff;
-    font-weight: 700; font-size: 44px; padding: 12px 36px; border-radius: 60px; box-shadow: 0 10px 40px rgba(127,209,192,.35); direction: ltr; }
-  #chip .ic { font-size: 50px; }
+  /* feature chip (dark pill) */
+  #chip { left: 0; right: 0; top: 150px; display: flex; justify-content: center; }
+  #chip .pill { display: flex; align-items: center; gap: 22px; background: var(--d-card); border: 1px solid var(--d-border); border-radius: 9999px;
+    padding: 14px 40px 14px 16px; box-shadow: var(--sh-lg-dark); direction: ltr; }
+  #chip .tile { width: 76px; height: 76px; border-radius: 9999px; background: var(--d-teal-soft); color: var(--d-teal-light); font-size: 38px; }
+  #chip .en { font-weight: 600; font-size: 40px; color: var(--d-foreground); line-height: 1.2; }
+  #chip .ar { font-weight: 500; font-size: 32px; color: var(--d-muted-foreground); direction: rtl; text-align: left; line-height: 1.5; }
 
-  .glass { background: rgba(250,250,247,.95); border-radius: 36px; box-shadow: 0 30px 80px rgba(0,0,0,.55); color: #1d2224; }
-
-  /* search panel */
-  #search { left: 90px; right: 90px; top: 290px; padding: 34px; direction: rtl; }
-  #search .bar { display: flex; align-items: center; gap: 18px; border: 3px solid #7fd1c0; border-radius: 50px; padding: 14px 28px; font-size: 42px; font-weight: 700; }
-  #search .bar .caret { width: 4px; height: 46px; background: #1d2224; }
-  #search .count { margin: 22px 6px 10px; font-size: 36px; color: #2e8b7a; font-weight: 700; }
-  #search .res { display: flex; gap: 18px; align-items: center; background: #eef6f4; border-radius: 22px; padding: 16px 22px; margin-top: 14px; direction: ltr; }
-  #search .res .doc { width: 54px; height: 66px; border-radius: 8px; background: #fff; border: 3px solid #7fd1c0; flex: none; }
-  #search .res .t { font-size: 30px; font-weight: 700; line-height: 1.25; }
-  #search .res .m { font-size: 24px; color: #6b7a7c; }
+  /* search */
+  #search { left: 80px; right: 80px; top: 300px; padding: 36px; }
+  #search .field { display: flex; align-items: center; gap: 18px; height: 92px; border: 2px solid var(--primary); border-radius: var(--radius);
+    padding: 0 28px; font-size: 38px; font-weight: 500; box-shadow: 0 0 0 7px hsl(180 53% 23% / .4); }
+  #search .field .i { color: var(--muted-foreground); font-size: 40px; }
+  #search .caret { width: 3px; height: 46px; background: var(--foreground); }
+  #search .count { display: flex; align-items: center; gap: 12px; margin: 26px 4px 8px; font-size: 32px; font-weight: 500; color: var(--muted-foreground); }
+  #search .count .i { color: var(--primary); font-size: 34px; }
+  #search .res { display: flex; gap: 22px; align-items: center; border: 1px solid var(--border); border-radius: var(--radius-2xl); padding: 18px 22px; margin-top: 16px; direction: ltr; }
+  #search .res .tile { width: 72px; height: 72px; background: var(--teal-soft); color: var(--primary); font-size: 34px; }
+  #search .res .t { font-size: 30px; font-weight: 600; line-height: 1.3; }
+  #search .res .m { font-size: 24px; color: var(--muted-foreground); font-variant-numeric: tabular-nums; margin-top: 4px; }
 
   /* evidence */
-  #evid { left: 70px; right: 70px; top: 270px; height: 760px; }
-  #evid .paper { position: absolute; left: 0; top: 0; width: 560px; padding: 34px 36px; transform: rotate(-3deg); }
-  #evid .paper .h { height: 26px; width: 70%; background: #1d2224; border-radius: 8px; margin-bottom: 26px; }
-  #evid .paper .l { position: relative; height: 18px; background: #c9d0d2; border-radius: 6px; margin: 18px 0; }
-  #evid .paper .l.hl::before { content: ''; position: absolute; inset: -9px -8px; background: #ffe066; border-radius: 6px; transform-origin: left; transform: scaleX(var(--hl, 0)); z-index: -1; }
-  #evid .paper .l.hl { background: #5a6466; z-index: 1; }
-  #evid .badge { position: absolute; left: 330px; top: 300px; background: #ffd84d; color: #111; font-weight: 900; font-size: 38px; padding: 6px 26px; border-radius: 40px; direction: rtl; box-shadow: 0 10px 30px rgba(0,0,0,.4); }
-  #evid .q { position: absolute; right: 0; top: 470px; width: 470px; padding: 26px 30px; direction: rtl; border: 4px solid #7fd1c0; }
-  #evid .q b { display: block; font-size: 30px; color: #2e8b7a; }
-  #evid .q span { font-size: 36px; font-weight: 700; line-height: 1.35; }
-  #evid svg { position: absolute; inset: 0; overflow: visible; }
+  #evid { left: 70px; right: 70px; top: 280px; height: 780px; }
+  #evid .paper { isolation: isolate; position: absolute; left: 0; top: 0; width: 600px; padding: 36px 38px; }
+  #evid .paper .eb { font-size: 22px; font-weight: 600; letter-spacing: .08em; color: var(--muted-foreground); direction: ltr; text-align: left; }
+  #evid .paper .h { height: 24px; width: 72%; background: var(--foreground); border-radius: 8px; margin: 14px 0 28px; }
+  #evid .paper .l { position: relative; height: 16px; background: var(--muted); border-radius: 6px; margin: 20px 0; }
+  #evid .paper .l.hl { background: hsl(0 0% 70%); }
+  #evid .paper .l.hl::before { content: ''; position: absolute; inset: -12px -10px; background: var(--amber-soft); border-bottom: 4px solid var(--amber);
+    border-radius: 6px; transform-origin: left; transform: scaleX(var(--hl, 0)); z-index: -1; }
+  #evid .badge { position: absolute; left: 360px; top: 330px; display: flex; align-items: center; gap: 12px; background: var(--teal-pill); color: var(--primary);
+    font-weight: 600; font-size: 34px; padding: 8px 28px; border-radius: 9999px; box-shadow: var(--sh-lg-dark); }
+  #evid .q { position: absolute; right: 0; top: 500px; width: 520px; padding: 28px 32px; display: flex; gap: 22px; align-items: flex-start; }
+  #evid .q .tile { width: 72px; height: 72px; background: var(--teal-soft); color: var(--primary); font-size: 34px; }
+  #evid .q b { display: block; font-size: 26px; color: var(--muted-foreground); font-weight: 600; }
+  #evid .q span { font-size: 34px; font-weight: 600; line-height: 1.5; }
+  #evid svg.link { position: absolute; inset: 0; overflow: visible; }
 
   /* audit */
-  #audit { left: 110px; right: 110px; top: 290px; padding: 36px 40px; direction: rtl; }
-  #audit h3 { margin: 0 0 16px; font-size: 44px; font-weight: 900; }
-  #audit .it { display: flex; align-items: center; gap: 20px; font-size: 36px; font-weight: 700; padding: 14px 6px; border-bottom: 2px solid #e2e7e8; direction: rtl; }
-  #audit .it .st { width: 58px; height: 58px; border-radius: 50%; display: grid; place-items: center; font-size: 34px; color: #fff; background: #c9d0d2; flex: none; }
-  #audit .it.ok .st { background: #2fb37f; }
-  #audit .it.bad .st { background: #e5484d; }
-  #audit .it.bad { color: #e5484d; }
-  #audit .it .ref { direction: ltr; font-size: 30px; color: #6b7a7c; font-weight: 400; margin-right: auto; }
+  #audit { left: 90px; right: 90px; top: 300px; padding: 36px 40px 22px; }
+  #audit h3 { margin: 0 0 10px; font-family: var(--serif-ar); font-size: 50px; font-weight: 700; line-height: 1.5; }
+  #audit .it { display: flex; align-items: center; gap: 22px; font-size: 34px; font-weight: 600; padding: 16px 0; border-top: 1px solid var(--border); }
+  #audit .it .tile { width: 64px; height: 64px; border-radius: 9999px; background: var(--muted); color: var(--muted-foreground); font-size: 32px; }
+  #audit .it.ok .tile { background: var(--green-soft); color: var(--green); }
+  #audit .it.bad .tile { background: var(--red-soft); color: var(--destructive); }
+  #audit .it.bad .lbl { color: var(--destructive); }
+  #audit .it .ref { direction: ltr; font-size: 26px; color: var(--muted-foreground); font-weight: 400; margin-right: auto; font-variant-numeric: tabular-nums; }
+  #audit .it .ic-bad { display: none; } #audit .it.bad .ic-bad { display: block; } #audit .it.bad .ic-ok { display: none; }
 
   /* chat */
-  #chat { left: 80px; right: 80px; top: 280px; direction: rtl; }
-  #chat .b { max-width: 760px; padding: 22px 32px; border-radius: 36px; font-size: 40px; font-weight: 700; line-height: 1.4; margin-bottom: 22px; box-shadow: 0 16px 40px rgba(0,0,0,.45); }
-  #chat .u { background: #ffd84d; color: #111; margin-right: 0; border-bottom-right-radius: 8px; }
-  #chat .a { background: #f7faf9; color: #1d2224; margin-right: auto; border-bottom-left-radius: 8px; border: 4px solid #7fd1c0; }
-  #chat .a .n { display: block; font-size: 28px; color: #2e8b7a; }
-  #chat .dots span { display: inline-block; width: 18px; height: 18px; border-radius: 50%; background: #7fd1c0; margin: 0 5px; }
+  #chat { left: 80px; right: 80px; top: 290px; }
+  #chat .b { max-width: 800px; padding: 24px 34px; border-radius: var(--radius-2xl); font-size: 38px; font-weight: 500; line-height: 1.6; margin-bottom: 24px; }
+  #chat .u { background: var(--primary); color: var(--primary-foreground); margin-left: auto; margin-right: 0; width: fit-content; box-shadow: var(--sh-lg-dark); }
+  #chat .row { display: flex; gap: 18px; align-items: flex-start; flex-direction: row; }
+  #chat .row .tile { width: 76px; height: 76px; border-radius: 9999px; background: var(--purple-soft); color: var(--purple); font-size: 36px; box-shadow: var(--sh-lg-dark); }
+  #chat .a { min-height: 96px; }
+  #chat .dots span { display: inline-block; width: 16px; height: 16px; border-radius: 50%; background: var(--muted-foreground); margin: 0 5px; }
 
-  /* outro */
-  #outro { inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 330px;
-    background: linear-gradient(to bottom, rgba(6,14,14,.94) 0%, rgba(6,14,14,.88) 48%, rgba(6,14,14,0) 70%); }
-  #outro .logo { font-weight: 900; font-size: 190px; color: #fff; letter-spacing: -4px; line-height: 1; }
-  #outro .logo span { color: #7fd1c0; }
-  #outro .tag { direction: rtl; font-weight: 900; font-size: 64px; color: #fff; margin-top: 30px; }
-  #outro .feat { direction: rtl; font-weight: 700; font-size: 38px; color: #9fded1; margin-top: 18px; text-align: center; line-height: 1.6; }
-  #outro .cta { direction: rtl; margin-top: 900px; position: absolute; top: 0; }
-  #outro .cta div { background: #ffd84d; color: #111; font-weight: 900; font-size: 54px; padding: 14px 46px; border-radius: 60px; }
-
-  #flash { inset: 0; background: #fff; }
+  /* outro: full-bleed teal panel with the brand's two 5% circles */
+  #outro { left: 0; right: 0; top: 0; height: 1160px; background: hsl(180 53% 23% / .996); /* primary; tiny alpha keeps the WebGL layer composited */ overflow: hidden; display: flex; flex-direction: column; align-items: center; padding-top: 290px; }
+  #outro .c1, #outro .c2 { position: absolute; border-radius: 50%; background: hsl(0 0% 100% / .05); }
+  #outro .c1 { width: 900px; height: 900px; right: -420px; top: -380px; }
+  #outro .c2 { width: 640px; height: 640px; left: -300px; bottom: -330px; }
+  #outro .logo { width: 760px; }
+  #outro .logo img { width: 100%; display: block; }
+  #outro .tag { font-family: var(--serif-ar); font-weight: 700; font-size: 66px; color: var(--primary-foreground); margin-top: 30px; line-height: 1.5; }
+  #outro .feat { font-weight: 500; font-size: 34px; color: hsl(180 29% 87%); margin-top: 10px; line-height: 1.6; }
+  #outro .cta { margin-top: 56px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  #outro .btn { display: flex; align-items: center; gap: 16px; background: var(--card); color: var(--primary); font-weight: 600; font-size: 46px; height: 108px; padding: 0 56px; border-radius: 9999px; box-shadow: var(--sh-lg-dark); }
+  #outro .btn .i { font-size: 44px; }
+  #outro .sub { font-size: 32px; font-weight: 500; color: hsl(180 29% 87%); }
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <!-- Lucide icons (2px stroke, round caps) -->
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+    <symbol id="i-library" viewBox="0 0 24 24"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></symbol>
+    <symbol id="i-highlighter" viewBox="0 0 24 24"><path d="m9 11-6 6v3h9l3-3"/><path d="m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4"/></symbol>
+    <symbol id="i-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></symbol>
+    <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></symbol>
+  </defs>
+</svg>
 <canvas id="gl" width="1080" height="1920"></canvas>
 
-<div id="hook" class="ov"><div>300 مقال… والاجتماع غدا! 😱</div></div>
-<div id="chip" class="ov"><div><span class="ic"></span><span class="tx"></span></div></div>
+<div id="hook" class="ov"><div class="card">
+  <div class="tile"><svg class="i"><use href="#i-bell"/></svg></div>
+  <div><div class="t">300 مقال، والاجتماع غدا</div><div class="s">واش حتى نتا فهاد الحالة؟</div></div>
+</div></div>
 
-<div id="search" class="ov glass">
-  <div class="bar"><span>🔎</span><span class="q"></span><span class="caret"></span></div>
-  <div class="count">🌍 ملايين المقالات، فكل المجالات</div>
-  <div class="res"><div class="doc"></div><div><div class="t">Deep learning for early disease detection</div><div class="m">Journal article · 2025</div></div></div>
-  <div class="res"><div class="doc"></div><div><div class="t">A systematic review of AI in clinical diagnosis</div><div class="m">Review · 2024</div></div></div>
-  <div class="res"><div class="doc"></div><div><div class="t">Explainable models for medical imaging</div><div class="m">Conference paper · 2026</div></div></div>
+<div id="chip" class="ov"><div class="pill">
+  <div class="tile"><svg class="i"><use href="#i-search"/></svg></div>
+  <div><div class="en"></div><div class="ar"></div></div>
+</div></div>
+
+<div id="search" class="ov card">
+  <div class="field"><svg class="i"><use href="#i-search"/></svg><span class="q"></span><span class="caret"></span></div>
+  <div class="count"><svg class="i"><use href="#i-globe"/></svg>ملايين المقالات، فكل المجالات</div>
+  <div class="res"><div class="tile"><svg class="i"><use href="#i-file"/></svg></div><div><div class="t">Deep learning for early disease detection</div><div class="m">Journal article · 2025</div></div></div>
+  <div class="res"><div class="tile"><svg class="i"><use href="#i-file"/></svg></div><div><div class="t">A systematic review of AI in clinical diagnosis</div><div class="m">Review · 2024</div></div></div>
+  <div class="res"><div class="tile"><svg class="i"><use href="#i-file"/></svg></div><div><div class="t">Explainable models for medical imaging</div><div class="m">Conference paper · 2026</div></div></div>
 </div>
 
 <div id="evid" class="ov">
-  <svg width="940" height="760"><path id="link" d="M 400 330 C 520 360, 560 420, 700 470" stroke="#ffd84d" stroke-width="8" fill="none" stroke-linecap="round" stroke-dasharray="400" stroke-dashoffset="400"/></svg>
-  <div class="paper glass"><div class="h"></div><div class="l"></div><div class="l" style="width:92%"></div><div class="l hl" style="width:85%"></div><div class="l hl" style="width:60%"></div><div class="l"></div><div class="l" style="width:80%"></div><div class="l"></div><div class="l" style="width:55%"></div></div>
-  <div class="badge">✨ دليل</div>
-  <div class="q glass"><b>سؤال البحث 1</b><span>واش الذكاء الاصطناعي كيحسّن التشخيص المبكر؟</span></div>
+  <svg class="link" width="940" height="780"><path id="link" d="M 420 380 C 520 410, 560 470, 640 520" stroke="hsl(180 40% 50%)" stroke-width="6" fill="none" stroke-linecap="round" stroke-dasharray="400" stroke-dashoffset="400"/></svg>
+  <div class="paper card"><div class="eb">JOURNAL ARTICLE · 2025</div><div class="h"></div><div class="l"></div><div class="l" style="width:92%"></div><div class="l hl" style="width:86%"></div><div class="l hl" style="width:62%"></div><div class="l"></div><div class="l" style="width:80%"></div><div class="l"></div><div class="l" style="width:55%"></div></div>
+  <div class="badge"><svg class="i"><use href="#i-highlighter"/></svg>دليل</div>
+  <div class="q card"><div class="tile"><svg class="i"><use href="#i-target"/></svg></div><div><b>سؤال البحث 1</b><span>واش الذكاء الاصطناعي كيحسّن التشخيص المبكر؟</span></div></div>
 </div>
 
-<div id="audit" class="ov glass">
-  <h3>📄 تدقيق المراجع — الأطروحة</h3>
-  <div class="it" data-k="0"><div class="st">✓</div>الفصل 1<span class="ref">Smith et al., 2023</span></div>
-  <div class="it" data-k="1"><div class="st">✓</div>الفصل 2<span class="ref">Benali, 2024</span></div>
-  <div class="it" data-k="2"><div class="st">!</div><span class="lbl">الفصل 3 — مرجع ناقص</span><span class="ref">[?]</span></div>
-  <div class="it" data-k="3"><div class="st">✓</div>الفصل 4<span class="ref">Chen &amp; Ali, 2025</span></div>
+<div id="audit" class="ov card">
+  <h3>تدقيق المراجع فالأطروحة</h3>
+  <div class="it"><div class="tile"><svg class="i ic-ok"><use href="#i-check"/></svg><svg class="i ic-bad"><use href="#i-alert"/></svg></div><span class="lbl">الفصل 1</span><span class="ref">Smith et al., 2023</span></div>
+  <div class="it"><div class="tile"><svg class="i ic-ok"><use href="#i-check"/></svg><svg class="i ic-bad"><use href="#i-alert"/></svg></div><span class="lbl">الفصل 2</span><span class="ref">Benali, 2024</span></div>
+  <div class="it"><div class="tile"><svg class="i ic-ok"><use href="#i-check"/></svg><svg class="i ic-bad"><use href="#i-alert"/></svg></div><span class="lbl">الفصل 3: مرجع ناقص</span><span class="ref">[?]</span></div>
+  <div class="it"><div class="tile"><svg class="i ic-ok"><use href="#i-check"/></svg><svg class="i ic-bad"><use href="#i-alert"/></svg></div><span class="lbl">الفصل 4</span><span class="ref">Chen &amp; Ali, 2025</span></div>
 </div>
 
 <div id="chat" class="ov">
-  <div class="b u">شنو هي المنهجية اللي تناسب الموضوع ديالي؟ 🤔</div>
-  <div class="b a"><span class="n">Baahith 🤖</span><span class="ans"></span><span class="dots"><span></span><span></span><span></span></span></div>
+  <div class="b u">شنو هي المنهجية اللي تناسب الموضوع ديالي؟</div>
+  <div class="row"><div class="tile"><svg class="i"><use href="#i-sparkles"/></svg></div>
+    <div class="b a card"><span class="ans"></span><span class="dots"><span></span><span></span><span></span></span></div></div>
 </div>
 
-<div id="cap" class="ov"><div class="who"></div><div class="txt"></div></div>
+<div id="cap" class="ov"><div class="txt"></div></div>
 
 <div id="outro" class="ov">
-  <div class="logo">Phi<span>Doc</span></div>
-  <div class="tag">رفيقك فرحلة الدكتوراه 🎓</div>
+  <div class="c1"></div><div class="c2"></div>
+  <div class="logo"><img src="/assets/logo-light.svg" alt="PhiDoc"></div>
+  <div class="tag">كلشي اللي كيحتاجو الدكتوراه ديالك</div>
   <div class="feat">قلّب · خزّن · رتّب · علّم · دقّق · سول Baahith</div>
-  <div class="cta"><div>جرّب Baahith دابا — الرابط فالبيو 👆</div></div>
+  <div class="cta">
+    <div class="btn"><svg class="i"><use href="#i-sparkles"/></svg>جرّب Baahith دابا</div>
+    <div class="sub">الرابط فالبيو</div>
+  </div>
 </div>
-<div id="flash" class="ov"></div>
 
 <script type="importmap">{ "imports": { "three": "/node_modules/three/build/three.module.js" } }</script>
 <script type="module" src="/src/scene.js"></script>

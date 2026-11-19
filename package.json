@@ -18,7 +18,11 @@
   },
   "homepage": "https://github.com/elayaneoumaima081-sketch/Phidoc-video#readme",
   "dependencies": {
+    "@fontsource/amiri": "^5.1.0",
     "@fontsource/cairo": "^5.1.0",
+    "@fontsource/fraunces": "^5.1.0",
+    "@fontsource/ibm-plex-sans-arabic": "^5.1.0",
+    "@fontsource/inter": "^5.1.0",
     "three": "^0.170.0"
   },
   "type": "module"
