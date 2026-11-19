@@ -191,7 +191,6 @@ for (let i = 0; i < 7; i++) { const lf = mesh(new THREE.SphereGeometry(0.05, 14,
 // ---------- the PhD student (clay + felt + knit) ----------
 const skin = clayM('#c98d63', { rough: 0.58, bump: 0.35 });
 const shirt = knitM('#1c1c22', 7);
-const hairM = felt('#0f0f11', { r: 3, bump: 1.6, sheen: 0.5, mix: 0.12 });
 const blackGloss = clayM('#0d0d0f', { rough: 0.3, cc: 0.8 });
 
 const boy = new THREE.Group(); boy.position.set(-0.5, 0, -0.72); boy.rotation.y = 0.22; scene.add(boy);
@@ -210,15 +209,46 @@ mesh(new THREE.ConeGeometry(0.06, 0.08, 3).rotateX(Math.PI), skin, V(0, 1.215, 0
 const head = new THREE.Group(); head.position.set(0, 1.46, 0.0); torso.add(head);
 mesh(new THREE.SphereGeometry(0.25, 48, 36), skin, V(0, 0, 0), head).scale.set(1, 1.03, 0.95);
 for (const s of [-1, 1]) mesh(new THREE.SphereGeometry(0.05, 16, 12), skin, V(s * 0.245, -0.01, -0.01), head).scale.set(0.5, 1, 0.8);
-// hair: felted wool, short tapered back and sides, swept-up quiff at the front
-const cap = fuzz(mesh(new THREE.SphereGeometry(0.259, 48, 28, 0, Math.PI * 2, 0, Math.PI * 0.5), hairM, V(0, 0.015, -0.02), head), '#18181b');
-cap.rotation.x = -0.62; cap.scale.set(1.02, 1.0, 1.02);
-for (const s of [-1, 1]) { const sb = fuzz(mesh(new THREE.SphereGeometry(0.1, 24, 14), hairM, V(s * 0.215, 0.05, -0.05), head), '#18181b', 2); sb.scale.set(0.38, 0.75, 1.0); }
-const quiff = new THREE.Group(); quiff.position.set(0.0, 0.13, 0.03); quiff.rotation.set(-0.1, 0, 0); head.add(quiff);
-[
-  { p: [-0.01, 0.06, 0.06], s: [0.175, 0.1, 0.17], r: [0.35, 0, -0.12] },
-  { p: [0.06, 0.08, 0.11], s: [0.1, 0.07, 0.09], r: [0.5, 0, -0.35] },
-].forEach(({ p, s: sc, r }) => { const m = fuzz(mesh(new THREE.SphereGeometry(1, 40, 24), hairM, V(...p), quiff), '#18181b', 3, 0.02); m.scale.set(...sc); m.rotation.set(...r); });
+// hair: ONE seamless sculpted mesh. Smooth black hair, short on the sides and back,
+// soft volume on top swept to one side; the edge tucks into the scalp so there is no seam.
+const strandTex = canvasTex(1024, 512, (g, w, h) => {
+  const r = rng(77); g.fillStyle = '#7a7a7a'; g.fillRect(0, 0, w, h);
+  for (let i = 0; i < 2600; i++) {
+    const x = r() * w, v = 70 + r() * 120; g.strokeStyle = `rgba(${v},${v},${v},${0.35 + r() * 0.4})`; g.lineWidth = 0.6 + r() * 1.6;
+    g.beginPath(); g.moveTo(x, 0); g.bezierCurveTo(x + (r() - 0.5) * 30, h * 0.33, x + (r() - 0.5) * 30, h * 0.66, x + (r() - 0.5) * 40, h); g.stroke();
+  }
+});
+const hairM = new THREE.MeshPhysicalMaterial({ color: '#121114', roughness: 0.5, bumpMap: strandTex, bumpScale: 0.9,
+  sheen: 0.45, sheenRoughness: 0.35, sheenColor: new THREE.Color('#3b3a44'), clearcoat: 0.08, clearcoatRoughness: 0.6 });
+function hairGeometry() {
+  const R0 = 0.25, g = new THREE.SphereGeometry(1, 160, 120);
+  const pos = g.attributes.position, d = new THREE.Vector3();
+  const ss = (e0, e1, x) => { const t = clamp((x - e0) / (e1 - e0)); return t * t * (3 - 2 * t); };
+  for (let i = 0; i < pos.count; i++) {
+    d.set(pos.getX(i), pos.getY(i), pos.getZ(i)).normalize();
+    const { x, y, z } = d;
+    // natural hairline: high on the forehead, receding a little at the temples, the fringe dropping slightly on the swept side,
+    // clean line above the ears, tapered low at the nape
+    const ax = Math.abs(x);
+    const front = 0.56 + 0.08 * ss(0.22, 0.6, ax) - 0.05 * clamp(x + 0.15) * ss(0.6, 0.1, ax);
+    const side = 0.1, back = -0.5;
+    let line = z >= 0 ? lerp(side, front, Math.pow(z, 1.15)) : lerp(side, back, Math.pow(-z, 0.85));
+    if (ax > 0.82 && z > -0.25 && z < 0.4) line = Math.max(line, 0.24); // clear the ears
+    const cover = ss(line - 0.04, line + 0.02, y);
+    // thickness: faded sides and back, fuller on top, lift at the front swept toward +x, a side part at x = -0.33
+    let th = 0.007 + 0.028 * ss(0.3, 0.92, y);
+    th += 0.045 * ss(0.5, 0.95, y) * ss(0.05, 0.8, z) * (0.55 + 0.6 * clamp(x + 0.4));
+    th -= 0.016 * Math.exp(-Math.pow((x + 0.33) / 0.045, 2)) * ss(0.45, 0.8, y) * ss(-0.6, -0.2, z);
+    th *= 0.25 + 0.75 * ss(line, line + 0.16, y); // taper toward the hairline so it blends into the skin
+    th = Math.max(th, 0.003);
+    const rad = lerp(R0 * 0.965, R0 + th, cover);
+    pos.setXYZ(i, d.x * rad, d.y * rad, d.z * rad);
+  }
+  g.computeVertexNormals();
+  return g;
+}
+const hair = mesh(hairGeometry(), hairM, V(0, 0, 0), head);
+hair.scale.set(1.0, 1.03, 0.95); // same proportions as the head
 // eyes
 const eyes = new THREE.Group(); head.add(eyes);
 const eyeWhite = clayM('#fbf7f0', { rough: 0.35, cc: 0.6 });
@@ -231,7 +261,7 @@ for (const s of [-1, 1]) {
   mesh(new THREE.SphereGeometry(0.007, 8, 6), new THREE.MeshBasicMaterial({ color: '#ffffff' }), V(0.01, 0.012, 0.012), p, false);
   pupils.push(p); e.userData.side = s;
 }
-const browM = felt('#151417', { r: 1, bump: 1 });
+const browM = new THREE.MeshStandardMaterial({ color: '#121114', roughness: 0.85 });
 const brows = [-1, 1].map((s) => { const b = mesh(new THREE.CapsuleGeometry(0.011, 0.06, 4, 8).rotateZ(Math.PI / 2), browM, V(s * 0.088, 0.105, 0.225), head, false); b.userData.s = s; return b; });
 mesh(new THREE.SphereGeometry(0.03, 16, 12), clayM('#bf8059'), V(0, -0.045, 0.245), head, false).scale.set(1, 0.9, 0.8);
 // cheeks (clay blush)
