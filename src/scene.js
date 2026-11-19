@@ -342,7 +342,7 @@ const folders = FOLDERS.map((f) => {
 const composer = new EffectComposer(renderer);
 composer.setPixelRatio(1); composer.setSize(1080, 1920);
 composer.addPass(new RenderPass(scene, camera));
-const bokeh = new BokehPass(scene, camera, { focus: 3, aperture: 0.03, maxblur: 0.025 });
+const bokeh = new BokehPass(scene, camera, { focus: 3, aperture: 0.008, maxblur: 0.01 });
 composer.addPass(bokeh);
 const grade = new ShaderPass({
   uniforms: { tDiffuse: { value: null }, time: { value: 0 } },
@@ -354,7 +354,7 @@ const grade = new ShaderPass({
       vec2 d = vUv - 0.5; d.x *= 0.62;
       float vig = smoothstep(0.85, 0.25, length(d));
       c.rgb *= mix(0.62, 1.04, vig);
-      c.rgb += (h(vUv * 1080.0) - 0.5) * 0.035;
+      c.rgb += (h(vUv * 1080.0) - 0.5) * 0.016;
       gl_FragColor = c;
     }`,
 });
@@ -368,7 +368,7 @@ const SHOTS = [
   { s: 5.5,  e: 7.0,  f: V(0.3, 1.1, -0.2), p: [V(0.15, 1.6, 4.1), V(0.2, 1.58, 3.8)], t: [V(0.1, 1.2, -0.25), V(0.15, 1.2, -0.25)] },
   { s: 7.0,  e: 11.5, p: [V(0.9, 1.25, 2.0), V(0.84, 1.24, 1.8)], t: [V(0.5, 1.17, -0.05), V(0.5, 1.17, -0.05)] },
   { s: 11.5, e: 13.5, p: [V(-0.22, 1.55, 1.25), V(-0.24, 1.54, 1.1)], t: [V(-0.45, 1.36, -0.7), V(-0.45, 1.36, -0.7)] },
-  { s: 13.5, e: 18.0, f: V(-0.1, 1.45, -0.4), p: [V(0.0, 1.75, 3.7), V(0.0, 1.75, 3.4)], t: [V(0.0, 1.55, -0.2), V(0.0, 1.55, -0.2)] },
+  { s: 13.5, e: 18.0, f: V(0.0, 1.55, -0.1), p: [V(0.0, 1.75, 3.7), V(0.0, 1.75, 3.4)], t: [V(0.0, 1.55, -0.2), V(0.0, 1.55, -0.2)] },
   { s: 18.0, e: 23.0, p: [V(0.1, 1.3, 2.0), V(0.15, 1.28, 1.85)], t: [V(0.5, 1.17, -0.05), V(0.5, 1.17, -0.05)] },
   { s: 23.0, e: 25.5, p: [V(-0.7, 1.5, 1.2), V(-0.68, 1.5, 1.0)], t: [V(-0.45, 1.36, -0.7), V(-0.45, 1.36, -0.7)] },
   { s: 25.5, e: 30.0, f: V(0.0, 1.3, -0.4), p: [V(0.1, 1.45, 3.5), V(0.1, 1.43, 3.25)], t: [V(0.05, 1.2, -0.3), V(0.05, 1.2, -0.3)] },
