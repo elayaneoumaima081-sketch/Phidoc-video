@@ -6,6 +6,13 @@ and Baahith hops onto his desk to show him how PhiDoc helps.
 
 **Final video:** `out/phidoc_reel_baahith.mp4` (captions, music and sound effects included; no voice yet).
 
+## Visual style
+
+Handmade felt and clay miniature at night, modelled on the reference reel: needle-felted wool (Baahith, hair, props)
+with fiber fuzz, a knitted black shirt, clay skin, a deep blue wall with a night window and warm fairy lights,
+a warm desk lamp as the key light, tilt-shift depth of field, a soft vignette and film grain. Captions appear in
+short chunks on cream paper labels with one keyword in brand teal. Everything is procedural (Three.js + postprocessing).
+
 ## Design system
 
 The captions and the outro follow the PhiDoc design system (organization default):

@@ -63,15 +63,11 @@
   .tile { display: grid; place-items: center; border-radius: var(--radius-2xl); flex: none; }
   .card { background: var(--card); color: var(--foreground); border: 1px solid var(--border); border-radius: var(--radius-2xl); box-shadow: var(--sh-lg-dark); }
 
-  /* captions (no speaker labels) */
-  #cap { left: 64px; right: 64px; top: 1360px; text-align: center; }
-  #cap .txt { font-weight: 700; font-size: 60px; line-height: 1.75; color: #fff;
-    -webkit-text-stroke: 10px hsl(42 8% 9% / .92); paint-order: stroke fill; }
-  #cap .w { display: inline-block; margin: 0 6px; }
-  #cap .w.hide { opacity: 0; }
-  #cap .w.cur.boy { color: var(--d-amber); }
-  #cap .w.cur.bot { color: var(--d-teal-light); }
-
+  /* captions: short chunks on a cream paper label, keyword in brand teal (no speaker labels) */
+  #cap { left: 40px; right: 40px; top: 1250px; text-align: center; }
+  #cap .lbl { display: inline-block; background: #fbf6ea; color: hsl(0 0% 6%); font-weight: 700; font-size: 66px; line-height: 1.55;
+    padding: 4px 30px 14px; border-radius: 10px; box-shadow: 0 12px 30px rgba(5, 10, 30, .45); }
+  #cap .lbl .hl { color: hsl(180 53% 23%); }
   /* hook */
   #hook { left: 0; right: 0; top: 200px; display: flex; justify-content: center; }
   #hook .card { display: flex; align-items: center; gap: 24px; padding: 22px 40px 22px 30px; }
@@ -215,7 +211,7 @@
     <div class="b a card"><span class="ans"></span><span class="dots"><span></span><span></span><span></span></span></div></div>
 </div>
 
-<div id="cap" class="ov"><div class="txt"></div></div>
+<div id="cap" class="ov"><div class="lbl"></div></div>
 
 <div id="outro" class="ov">
   <div class="c1"></div><div class="c2"></div>
@@ -228,7 +224,7 @@
   </div>
 </div>
 
-<script type="importmap">{ "imports": { "three": "/node_modules/three/build/three.module.js" } }</script>
+<script type="importmap">{ "imports": { "three": "/node_modules/three/build/three.module.js", "three/addons/": "/node_modules/three/examples/jsm/" } }</script>
 <script type="module" src="/src/scene.js"></script>
 </body>
 </html>
