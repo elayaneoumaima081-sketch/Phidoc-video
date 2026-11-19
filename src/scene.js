@@ -32,8 +32,8 @@ renderer.toneMappingExposure = 1.45;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color('#0e1a44');
-scene.fog = new THREE.Fog('#0e1a44', 7, 16);
+scene.background = new THREE.Color('#191815'); // PhiDoc warm near-black hsl(42 8% 9%)
+scene.fog = new THREE.Fog('#191815', 7, 16);
 const camera = new THREE.PerspectiveCamera(36, 1080 / 1920, 0.05, 50);
 
 // ---------- procedural handmade textures ----------
@@ -72,10 +72,10 @@ const TEX = {
       g.beginPath(); g.moveTo(0, y); for (let x = 0; x <= w; x += 32) g.lineTo(x, y + Math.sin(x * 0.01 + i) * 4 * r()); g.stroke(); }
   }, true),
   sky: canvasTex(512, 640, (g, w, h) => {
-    const gr = g.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, '#0a1233'); gr.addColorStop(1, '#22398a'); g.fillStyle = gr; g.fillRect(0, 0, w, h);
+    const gr = g.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, '#061a1c'); gr.addColorStop(1, '#14504f'); g.fillStyle = gr; g.fillRect(0, 0, w, h);
     const r = rng(21); for (let i = 0; i < 70; i++) { g.fillStyle = `rgba(255,240,210,${0.4 + r() * 0.6})`; const s = r() < 0.15 ? 3 : 1.6; g.beginPath(); g.arc(r() * w, r() * h * 0.8, s, 0, 7); g.fill(); }
-    g.fillStyle = '#fff3d6'; g.beginPath(); g.arc(150, 170, 62, 0, 7); g.fill(); g.fillStyle = '#0f1a45'; g.beginPath(); g.arc(178, 150, 58, 0, 7); g.fill();
-    for (let i = 0; i < 26; i++) { const x = i * 22, bh = 40 + r() * 130; g.fillStyle = '#0b1230'; g.fillRect(x, h - bh, 20, bh);
+    g.fillStyle = '#fff3d6'; g.beginPath(); g.arc(150, 170, 62, 0, 7); g.fill(); g.fillStyle = '#082022'; g.beginPath(); g.arc(178, 150, 58, 0, 7); g.fill();
+    for (let i = 0; i < 26; i++) { const x = i * 22, bh = 40 + r() * 130; g.fillStyle = '#06191a'; g.fillRect(x, h - bh, 20, bh);
       for (let k = 0; k < 6; k++) if (r() < 0.5) { g.fillStyle = `rgba(255,${180 + r() * 50},${90 + r() * 40},.9)`; g.fillRect(x + 4 + (k % 2) * 8, h - bh + 8 + Math.floor(k / 2) * 14, 4, 6); } }
   }, true),
 };
@@ -111,17 +111,21 @@ function fuzz(m, color, layers = 3, step = 0.0035, r = 2) {
 }
 
 // ---------- lights: warm desk lamp + cool moonlight ----------
-scene.add(new THREE.HemisphereLight('#4a66cc', '#6a3a1e', 0.45));
+scene.add(new THREE.HemisphereLight('#4fa3a3', '#6a3a1e', 0.45));
 const keyF = new THREE.DirectionalLight('#ffe0bd', 1.6); keyF.position.set(1.2, 2.6, 3.0); scene.add(keyF);
-const moon = new THREE.DirectionalLight('#8fa8ff', 0.9);
+const moon = new THREE.DirectionalLight('#9fe0dc', 0.8);
 moon.position.set(-2.5, 3.2, 0.5); scene.add(moon);
 const fillL = new THREE.PointLight('#ffd2a8', 3.2, 0, 2);
 fillL.position.set(0.2, 1.7, 2.4); scene.add(fillL);
 
 // ---------- room ----------
-mesh(new THREE.PlaneGeometry(30, 30).rotateX(-Math.PI / 2), felt('#120d0c', { r: 20, sheen: 0 }), V(0, 0, 0));
-const wallMat = felt('#14286a', { r: 8, bump: 0.8, sheen: 0.3 });
+mesh(new THREE.PlaneGeometry(30, 30).rotateX(-Math.PI / 2), felt('#191815', { r: 20, sheen: 0 }), V(0, 0, 0));
+// wall in the PhiDoc brand teal (primary hsl(180 53% 23%)), with the brand's two oversized 5% white circles
+const wallMat = felt('#14596a', { r: 8, bump: 0.8, sheen: 0.3, mix: 0.2 }); // a touch bluer so the warm lamp light lands on brand teal
 mesh(new THREE.PlaneGeometry(12, 8), wallMat, V(0, 3, -1.6));
+const circleM = new THREE.MeshStandardMaterial({ color: '#ffffff', transparent: true, opacity: 0.05, roughness: 1, depthWrite: false });
+mesh(new THREE.CircleGeometry(1.5, 96), circleM, V(1.7, 3.3, -1.595), null, false);
+mesh(new THREE.CircleGeometry(1.1, 96), circleM, V(-1.9, 0.9, -1.595), null, false);
 const deskMat = new THREE.MeshPhysicalMaterial({ color: '#c08a5e', map: rep(TEX.wood, 2, 1), roughness: 0.6, clearcoat: 0.25, clearcoatRoughness: 0.5 });
 mesh(new THREE.BoxGeometry(3.6, 0.07, 1.4), deskMat, V(0, 0.745, -0.25));
 for (const x of [-1.7, 1.7]) mesh(new THREE.BoxGeometry(0.08, 0.75, 1.2), deskMat, V(x, 0.375, -0.25));
