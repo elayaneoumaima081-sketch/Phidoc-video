@@ -98,6 +98,8 @@
   #search .res { display: flex; gap: 22px; align-items: center; border: 1px solid var(--border); border-radius: var(--radius-2xl); padding: 18px 22px; margin-top: 16px; direction: ltr; }
   #search .res .tile { width: 72px; height: 72px; background: var(--teal-soft); color: var(--primary); font-size: 34px; }
   #search .res .t { font-size: 30px; font-weight: 600; line-height: 1.3; }
+  #search .res .body { flex: 1; min-width: 0; }
+  #search .res .fld { flex: none; background: var(--teal-soft); color: var(--primary); font-weight: 600; font-size: 26px; padding: 4px 22px; border-radius: 9999px; direction: rtl; }
   #search .res .m { font-size: 24px; color: var(--muted-foreground); font-variant-numeric: tabular-nums; margin-top: 4px; }
 
   /* evidence */
@@ -138,13 +140,13 @@
   #chat .dots span { display: inline-block; width: 16px; height: 16px; border-radius: 50%; background: var(--muted-foreground); margin: 0 5px; }
 
   /* outro: full-bleed teal panel with the brand's two 5% circles */
-  #outro { left: 0; right: 0; top: 0; height: 1160px; background: hsl(180 53% 23% / .996); /* primary; tiny alpha keeps the WebGL layer composited */ overflow: hidden; display: flex; flex-direction: column; align-items: center; padding-top: 290px; }
+  #outro { left: 0; right: 0; top: 0; height: 1160px; background: hsl(180 53% 23% / .996); /* primary; tiny alpha keeps the WebGL layer composited */ overflow: hidden; display: flex; flex-direction: column; align-items: center; padding-top: 250px; }
   #outro .c1, #outro .c2 { position: absolute; border-radius: 50%; background: hsl(0 0% 100% / .05); }
   #outro .c1 { width: 900px; height: 900px; right: -420px; top: -380px; }
   #outro .c2 { width: 640px; height: 640px; left: -300px; bottom: -330px; }
   #outro .logo { width: 760px; }
   #outro .logo img { width: 100%; display: block; }
-  #outro .tag { font-family: var(--serif-ar); font-weight: 700; font-size: 66px; color: var(--primary-foreground); margin-top: 30px; line-height: 1.5; }
+  #outro .tag { font-family: var(--serif-ar); font-weight: 700; font-size: 66px; color: var(--primary-foreground); margin-top: 30px; line-height: 1.45; text-align: center; }
   #outro .feat { font-weight: 500; font-size: 34px; color: hsl(180 29% 87%); margin-top: 10px; line-height: 1.6; }
   #outro .cta { margin-top: 56px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
   #outro .btn { display: flex; align-items: center; gap: 16px; background: var(--card); color: var(--primary); font-weight: 600; font-size: 46px; height: 108px; padding: 0 56px; border-radius: 9999px; box-shadow: var(--sh-lg-dark); }
@@ -186,9 +188,10 @@
 <div id="search" class="ov card">
   <div class="field"><svg class="i"><use href="#i-search"/></svg><span class="q"></span><span class="caret"></span></div>
   <div class="count"><svg class="i"><use href="#i-globe"/></svg>ملايين المقالات، فكل المجالات</div>
-  <div class="res"><div class="tile"><svg class="i"><use href="#i-file"/></svg></div><div><div class="t">Deep learning for early disease detection</div><div class="m">Journal article · 2025</div></div></div>
-  <div class="res"><div class="tile"><svg class="i"><use href="#i-file"/></svg></div><div><div class="t">A systematic review of AI in clinical diagnosis</div><div class="m">Review · 2024</div></div></div>
-  <div class="res"><div class="tile"><svg class="i"><use href="#i-file"/></svg></div><div><div class="t">Explainable models for medical imaging</div><div class="m">Conference paper · 2026</div></div></div>
+  <div class="res"><div class="tile"><svg class="i"><use href="#i-file"/></svg></div><div class="body"><div class="t">Digital transformation of public services in Morocco</div><div class="m">Journal article · 2025</div></div><div class="fld">القانون</div></div>
+  <div class="res"><div class="tile"><svg class="i"><use href="#i-file"/></svg></div><div class="body"><div class="t">Telemedicine adoption in rural health centres</div><div class="m">Review · 2024</div></div><div class="fld">الطب</div></div>
+  <div class="res"><div class="tile"><svg class="i"><use href="#i-file"/></svg></div><div class="body"><div class="t">Mobile payments and financial inclusion in North Africa</div><div class="m">Working paper · 2026</div></div><div class="fld">الاقتصاد</div></div>
+  <div class="res"><div class="tile"><svg class="i"><use href="#i-file"/></svg></div><div class="body"><div class="t">Digital humanities and Arabic manuscript archives</div><div class="m">Book chapter · 2025</div></div><div class="fld">الآداب</div></div>
 </div>
 
 <div id="evid" class="ov">
@@ -217,7 +220,7 @@
 <div id="outro" class="ov">
   <div class="c1"></div><div class="c2"></div>
   <div class="logo"><img src="/assets/logo-light.svg" alt="PhiDoc"></div>
-  <div class="tag">كلشي اللي كيحتاجو الدكتوراه ديالك</div>
+  <div class="tag">رحلة الدكتوراه كاملة<br>في منصّة واحدة.</div>
   <div class="feat">قلّب · خزّن · رتّب · علّم · دقّق · سول Baahith</div>
   <div class="cta">
     <div class="btn"><svg class="i"><use href="#i-sparkles"/></svg>جرّب Baahith دابا</div>

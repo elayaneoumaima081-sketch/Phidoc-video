@@ -114,11 +114,17 @@ const head = new THREE.Group(); head.position.set(0, 1.46, 0.0); torso.add(head)
 mesh(new THREE.SphereGeometry(0.25, 40, 32), skin, V(0, 0, 0), head).scale.set(1, 1.03, 0.95);
 for (const s of [-1, 1]) mesh(new THREE.SphereGeometry(0.05, 16, 12), skin, V(s * 0.245, -0.01, -0.01), head).scale.set(0.5, 1, 0.8);
 // smooth, matte black hair
-const cap = mesh(new THREE.SphereGeometry(0.265, 40, 24, 0, Math.PI * 2, 0, Math.PI * 0.52), hairM, V(0, 0.02, -0.015), head);
-cap.rotation.x = -0.5; cap.scale.set(1.03, 1.04, 1.02);
-// side-swept fringe that hugs the forehead (no brim)
-const fringe = mesh(new THREE.SphereGeometry(0.272, 40, 16, 0, Math.PI * 2, 0, Math.PI * 0.27), hairM, V(0, 0.01, 0.0), head); fringe.rotation.set(0.1, 0, -0.3);
-for (const s of [-1, 1]) { const sb = mesh(new THREE.SphereGeometry(0.12, 20, 12), hairM, V(s * 0.205, 0.04, -0.06), head); sb.scale.set(0.42, 0.95, 0.95); }
+// hair: short tapered back and sides, a side part, and a smooth swept-up quiff at the front
+const cap = mesh(new THREE.SphereGeometry(0.259, 40, 24, 0, Math.PI * 2, 0, Math.PI * 0.5), hairM, V(0, 0.015, -0.02), head);
+cap.rotation.x = -0.62; cap.scale.set(1.02, 1.0, 1.02);
+for (const s of [-1, 1]) { const sb = mesh(new THREE.SphereGeometry(0.1, 20, 12), hairM, V(s * 0.215, 0.05, -0.05), head); sb.scale.set(0.38, 0.75, 1.0); }
+const quiff = new THREE.Group(); quiff.position.set(0.0, 0.13, 0.03); quiff.rotation.set(-0.1, 0, 0); head.add(quiff);
+[
+  { p: [-0.01, 0.06, 0.06], s: [0.175, 0.1, 0.17], r: [0.35, 0, -0.12] },
+  { p: [0.06, 0.08, 0.11], s: [0.1, 0.07, 0.09], r: [0.5, 0, -0.35] },
+].forEach(({ p, s: sc, r }) => { const m = mesh(new THREE.SphereGeometry(1, 40, 24), hairM, V(...p), quiff); m.scale.set(...sc); m.rotation.set(...r); });
+// side part line
+mesh(new THREE.BoxGeometry(0.006, 0.004, 0.16), M('#2a2a2a', { roughness: 1 }), V(-0.12, 0.215, 0.03), head, false).rotation.set(0.2, 0, 0.45);
 // eyes
 const eyes = new THREE.Group(); head.add(eyes);
 const eyeWhite = M('#ffffff', { roughness: 0.3 });
@@ -429,15 +435,15 @@ function chips(t) {
   }
   show(el, C ? win(t, C.s, C.e, 0.35, 0.25) : 0, -20);
 }
-const QUERY = 'الذكاء الاصطناعي فالتشخيص الطبي';
+const QUERY = 'التحول الرقمي';
 function panels(t) {
   show($('#hook'), win(t, 0.3, 3.4, 0.4, 0.3), 30);
   // search
   show($('#search'), win(t, 7.3, 11.5, 0.4, 0.3));
-  $('#search .q').textContent = QUERY.slice(0, Math.floor(QUERY.length * range(t, 7.7, 9.0)));
+  $('#search .q').textContent = QUERY.slice(0, Math.floor(QUERY.length * range(t, 7.7, 8.6)));
   $('#search .caret').style.opacity = Math.floor(t * 3) % 2 ? 1 : 0.15;
   show($('#search .count'), range(t, 8.9, 9.3), 10);
-  $$('#search .res').forEach((r, i) => show(r, range(t, 9.2 + i * 0.3, 9.7 + i * 0.3), 20));
+  $$('#search .res').forEach((r, i) => show(r, range(t, 9.0 + i * 0.28, 9.5 + i * 0.28), 20));
   // evidence
   show($('#evid'), win(t, 18.3, 23.0, 0.4, 0.3));
   $$('#evid .l.hl').forEach((l, i) => l.style.setProperty('--hl', brand(range(t, 19.2 + i * 0.35, 19.7 + i * 0.35))));

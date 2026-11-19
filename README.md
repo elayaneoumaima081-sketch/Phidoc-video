@@ -31,12 +31,12 @@ word by word with the same timing, so the voice should follow the caption pace.
 | 4 | 13.6 – 18.0 | Baahith | زيد اللي عجبوك للمكتبة ديالك، ورتبهم فـ collections. | Personal library, Collections: papers fly into "الفصل 1/2/3" folders |
 | 5 | 18.2 – 23.0 | Baahith | علّم على الجمل المهمة، وغادي نربطهم ليك مع الأسئلة ديال البحث ديالك. | Highlights and evidence, linked to a research question |
 | 6 | 23.2 – 25.4 | Student (worried) | وإلا نسيت شي مرجع؟ | |
-| 7 | 25.6 – 30.0 | Baahith | وفالأخير، نتأكد بلي حتى مرجع ما ناقص فالأطروحة ديالك. | Citation audit: missing reference flagged, then fixed |
+| 7 | 25.6 – 30.0 | Baahith | غادي نتأكد بلي حتى مرجع ما ناقص فالأطروحة ديالك. | Citation audit: missing reference flagged, then fixed |
 | 8 | 30.2 – 32.4 | Student | وإلا كان عندي سؤال على الموضوع ديالي؟ | |
 | 9 | 32.6 – 36.4 | Baahith | سولني أنا! ونجاوبك على حساب المجال ديالك. | Ask Baahith: chat panel |
 | 10 | 36.8 – 38.6 | Student (relaxed, leaning back) | صافي، دابا نقدر نرتاح | |
 | 11 | 38.8 – 41.0 | Baahith (laughing) | ترتاح؟! باقي خاصك تكتب الأطروحة | Punchline: glasses slip, sweat drop, zoom |
-| | 41.0 – 45.0 | | Outro: PhiDoc logo, كلشي اللي كيحتاجو الدكتوراه ديالك, button جرّب Baahith دابا, الرابط فالبيو | |
+| | 41.0 – 45.0 | | Outro: PhiDoc logo, رحلة الدكتوراه كاملة في منصّة واحدة., button جرّب Baahith دابا, الرابط فالبيو | |
 
 Voice direction: the student has a young, fast, slightly dramatic voice. Baahith is warm, playful
 and a little higher-pitched, like a friendly robot.
