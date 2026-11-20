@@ -24,10 +24,8 @@ export const CHIPS = []; // no on-screen cards or labels: just the conversation
 
 // Sound effects cues (generated with ffmpeg in render step).
 export const SFX = [
-  ...Array.from({ length: 14 }, (_, i) => ({ t: 0.35 + i * 0.22, type: 'paper' })),
   { t: 5.6, type: 'whoosh' },
   { t: 6.55, type: 'boing' },
-  { t: 14.0, type: 'whoosh' },
   { t: 39.6, type: 'boing' },
   { t: 41.0, type: 'whoosh' },
 ];
